@@ -1,15 +1,16 @@
 const PHONE_REG_EXP = new RegExp("^[+]?[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$");
 
-class Validation {
+class Validator {
 
-    constructor() {
+    init() {
         this.errors = [];
-        this.valid = true;
         this.value = undefined;
+        this.valid = true;
         this.invalidType = false;
+        return this;
     }
 
-    checkType(type, cause) {
+    checkType(type) {
         if (typeof this.value !== type) {
             this.setInvalid(`field must be a ${type}`);
             this.invalidType = true;
@@ -22,23 +23,25 @@ class Validation {
     }
 
     /**
-     * @param {function} validationConsumer - () => boolean, if true then setInvalid(errorMessage);
+     * @param {function} validationConsumer - () => boolean, if false then setInvalid(errorMessage);
      * @param {string} errorMessage
      */
     check(validationConsumer, errorMessage) {
         if (this.invalidType) return;
-        if (validationConsumer()) {
+        if (!validationConsumer()) {
             this.setInvalid(errorMessage);
         }
+        return this;
     }
 }
 
-export class StringValidation extends Validation {
+export class StringValidator extends Validator {
 
-    constructor(value) {
-        super();
+    init(value) {
+        super.init();
         this.value = value;
         this.checkType("string");
+        return this;
     }
 
     checkLessOrEqualsThen(size) {
@@ -46,6 +49,15 @@ export class StringValidation extends Validation {
             () => this.value.length <= size,
             `field length must be less or equals then ${size}`
         );
+        return this;
+    }
+
+    checkNotBlank() {
+        this.check(
+            () => this.value.trim().length !== 0,
+            "field mustn't contains whitespaces"
+        );
+        return this;
     }
 
     checkPhone() {
@@ -53,12 +65,26 @@ export class StringValidation extends Validation {
             () => PHONE_REG_EXP.test(this.value),
             "field is not a phone"
         );
+        return this;
     }
 }
 
-export class NumberValidation extends Validation {
+export class NumberValidator extends Validator {
 
+    init(value) {
+        super.init();
+        this.value = value;
+        this.checkType("number");
+        return this;
+    }
 
+    checkPositive() {
+        this.check(
+            () => this.value > 0,
+            "field must be more then 0"
+        );
+        return this;
+    }
 
 }
 

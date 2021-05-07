@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Rose:wght@700&display=swap');
+
+$log-components-borders: false;
+$font-color: black;
+$font-color-reversed: white;
+$main-color: #00c4ff;
+
+@mixin log() {
+  @if $log-components-borders {
+    border: black 1px solid;
+  }
+}
+
+@mixin underline($color) {
+  border-bottom: $color solid 3px;
+}
+
+* {
+  box-sizing: border-box;
+  @include log();
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 1.25rem;
+  font-weight: 100;
+  margin: 0;
+  padding: 0;
+  color: $font-color;
+}
+
+a, a:visited {
+
+  --underline-color: #0003;
+
+  color: inherit;
+  display: inline-block;
+  text-decoration: none;
+
+  &:hover {
+    color: mix($font-color, $font-color-reversed, 20);
+  }
+
+  &:active {
+    color: $main-color;
+  }
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    flex: 1 0 auto;
+  }
+  .footer {
+    flex-shrink: 0;
+  }
+}
+
+.header {
+
+  box-shadow: 3px 0 7px rgba(0,0,0,.3);
+  padding: 0 10%;
+  background-color: mix($font-color, $font-color-reversed, 80);
+  color: $font-color-reversed;
+
+  > a {
+    padding: 20px;
+
+    &:link {
+      @include underline(#0000);
+    }
+
+    &:hover {
+      color: $font-color-reversed;
+      @include underline($font-color-reversed);
+    }
+
+    &:active {
+      color: $main-color;
+      @include underline($main-color);
+    }
+  }
+}
+
+.main {
+  padding: 40px 10% 0;
+}
+
+.footer {
+  position: relative;
+  width: 100%;
+  bottom: 0;
+  font-size: 1rem;
+
+  color: $font-color-reversed;
+  background-color: mix($font-color, $font-color-reversed, 80);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+  padding: 0 5%;
+
+  > a {
+    margin: 20px 20px;
+  }
+}

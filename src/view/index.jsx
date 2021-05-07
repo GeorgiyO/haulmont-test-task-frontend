@@ -6,14 +6,16 @@ import {Header} from "./header";
 import {Main} from "./main";
 import {Footer} from "./footer";
 
+import "./style.scss";
+
 function Root() {
     return (
         <BrowserRouter>
-            <div className={"root"}>
+            <div className={"content"}>
                 <Header/>
                 <Main/>
-                <Footer/>
             </div>
+            <Footer/>
         </BrowserRouter>
     )
 }
