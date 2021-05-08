@@ -37,6 +37,13 @@ class Validator {
 
 export class StringValidator extends Validator {
 
+    static notBlank250LengthMin(val) {
+        return this.instance.init(val)
+            .checkNotBlank()
+            .checkLessOrEqualsThen(250)
+            .errors;
+    }
+
     init(value) {
         super.init();
         this.value = value;
@@ -68,6 +75,7 @@ export class StringValidator extends Validator {
         return this;
     }
 }
+StringValidator.instance = new StringValidator();
 
 export class NumberValidator extends Validator {
 

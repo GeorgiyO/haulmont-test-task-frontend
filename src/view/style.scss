@@ -11,8 +11,8 @@ $main-color: #00c4ff;
   }
 }
 
-@mixin underline($color) {
-  border-bottom: $color solid 3px;
+@mixin underline($color, $size) {
+  border-bottom: $color solid $size;
 }
 
 * {
@@ -34,19 +34,44 @@ body {
 }
 
 a, a:visited {
-
-  --underline-color: #0003;
-
-  color: inherit;
+  color: $font-color;
   display: inline-block;
   text-decoration: none;
 
+  $underlineSize: 1px;
+
+  &:link {
+    @include underline(#000, $underlineSize);
+  }
+
   &:hover {
-    color: mix($font-color, $font-color-reversed, 20);
+    $color: mix($font-color, $font-color-reversed, 20);
+    color: $color;
+    @include underline($color, $underlineSize);
   }
 
   &:active {
     color: $main-color;
+    @include underline($main-color, $underlineSize);
+  }
+}
+
+button, input[type=submit] {
+  background-color: #0004;
+  border: 2px solid $font-color;
+  font: inherit;
+  color: $font-color;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 1em 2em;
+
+  transition-property: box-shadow, color, border-color;
+  transition-duration: 0.25s;
+
+  &:hover {
+    box-shadow: inset 0 0 0 2em $main-color;
+    color: $font-color-reversed;
+    border-color: $font-color-reversed;
   }
 }
 
@@ -67,29 +92,45 @@ a, a:visited {
   box-shadow: 3px 0 7px rgba(0,0,0,.3);
   padding: 0 10%;
   background-color: mix($font-color, $font-color-reversed, 80);
-  color: $font-color-reversed;
+
+  $underlineSize: 3px;
 
   > a {
+    color: $font-color-reversed;
     padding: 20px;
 
     &:link {
-      @include underline(#0000);
+      @include underline(#0000, $underlineSize);
     }
 
     &:hover {
       color: $font-color-reversed;
-      @include underline($font-color-reversed);
+      @include underline($font-color-reversed, $underlineSize);
     }
 
     &:active {
       color: $main-color;
-      @include underline($main-color);
+      @include underline($main-color, $underlineSize);
     }
   }
 }
 
 .main {
   padding: 40px 10% 0;
+
+  .entity-menu {
+
+    > nav {
+
+      margin-bottom: 20px;
+      @include underline($font-color, 1px);
+      padding-bottom: 20px;
+
+      > a {
+        margin: 0 10px;
+      }
+    }
+  }
 }
 
 .footer {
@@ -98,7 +139,6 @@ a, a:visited {
   bottom: 0;
   font-size: 1rem;
 
-  color: $font-color-reversed;
   background-color: mix($font-color, $font-color-reversed, 80);
 
   display: flex;
@@ -108,6 +148,11 @@ a, a:visited {
   padding: 0 5%;
 
   > a {
+    color: $font-color-reversed;
     margin: 20px 20px;
+
+    :link {
+      @include underline($font-color-reversed, 1px);
+    }
   }
 }
