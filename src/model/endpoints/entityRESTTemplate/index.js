@@ -7,16 +7,34 @@ async function sendRequest(method, url, data) {
     };
     if (data !== undefined) init.body = JSON.stringify(data);
 
-    let response = await fetch(url, init);
-    return response.status >= 200 && response.status < 300 ?
-           response.json() :
-           response.status;
+    return await fetch(url, init);
 }
 
 export function RESTApi(entityUrl) {
-    this.getById = (id) => sendRequest("GET", entityUrl + "/" + id),
-        this.getAll = () => sendRequest("GET", entityUrl),
-        this.post = (entity) => sendRequest("POST", entityUrl, entity),
-        this.put = (entity, id) => sendRequest("PUT", entityUrl + "/" + id, entity),
-        this.delete = (id) => sendRequest("DELETE", entityUrl + "/" + id)
+    this.getById = (id) => sendRequest(
+        "GET",
+        entityUrl + "/" + id
+    ).then((response) => response.json());
+
+    this.getAll = () => sendRequest(
+        "GET",
+        entityUrl
+    ).then((response) => response.json());
+
+    this.add = (entity) => sendRequest(
+        "POST",
+        entityUrl,
+        entity
+    ).then((response) => response.json());
+
+    this.update = (entity, id) => sendRequest(
+        "PUT",
+        entityUrl + "/" + id,
+        entity
+    ).then((response) => response.json());
+
+    this.delete = (id) => sendRequest(
+        "DELETE",
+        entityUrl + "/" + id
+    );
 }

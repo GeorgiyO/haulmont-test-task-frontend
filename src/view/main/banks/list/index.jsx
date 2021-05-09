@@ -8,11 +8,15 @@ export function BanksList() {
 
     React.useEffect(() => {
         API.getAll().then((banks) => {
-            setContent(banks.map((bank, i) => (
-                <div key={i}>
-                    <Link to={"/banks/" + bank.id}>{bank.name}</Link>
-                </div>
-            )));
+            setContent(
+                banks.length === 0 ?
+                "empty set" :
+                banks.map((bank, i) => (
+                    <div key={i}>
+                        <Link to={"/banks/" + bank.id}>{bank.name}</Link>
+                    </div>
+                ))
+            );
         });
     }, []);
 

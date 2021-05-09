@@ -50,28 +50,35 @@ a, a:visited {
     @include underline($color, $underlineSize);
   }
 
-  &:active {
+  &:active, &.current {
     color: $main-color;
     @include underline($main-color, $underlineSize);
   }
 }
 
 button, input[type=submit] {
-  background-color: #0004;
   border: 2px solid $font-color;
   font: inherit;
   color: $font-color;
   line-height: 1;
   margin: 0.5em;
-  padding: 1em 2em;
+  padding: 0.5em 1em;
 
   transition-property: box-shadow, color, border-color;
   transition-duration: 0.25s;
 
   &:hover {
-    box-shadow: inset 0 0 0 2em $main-color;
+    box-shadow: inset 0 0 0 2em $font-color;
     color: $font-color-reversed;
-    border-color: $font-color-reversed;
+
+    &.red {
+      box-shadow: inset 0 0 0 2em #d22;
+    }
+  }
+
+  &:active {
+    box-shadow: inset 0 0 0 2em $main-color;
+    transition-duration: 0.05s;
   }
 }
 

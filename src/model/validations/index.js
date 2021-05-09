@@ -79,10 +79,28 @@ StringValidator.instance = new StringValidator();
 
 export class NumberValidator extends Validator {
 
+    static positiveInt = function (val) {
+        return this.instance.init(val)
+            .checkPositive()
+            .checkInt()
+            .errors;
+    }
+
+    static positive = function (val) {
+        return this.instance.init(val)
+            .checkPositive()
+            .errors;
+    }
+
     init(value) {
         super.init();
-        this.value = value;
-        this.checkType("number");
+        this.value = Number(value);
+        let isNumber = !isNaN(this.value);
+        this.check(
+            () => isNumber,
+            "field must be a number"
+        );
+        this.invalidType = !isNumber;
         return this;
     }
 
@@ -94,5 +112,13 @@ export class NumberValidator extends Validator {
         return this;
     }
 
+    checkInt() {
+        this.check(
+            () => this.value === parseInt(this.value),
+            "field must be an integer"
+        );
+    }
+
 }
+NumberValidator.instance = new NumberValidator();
 
