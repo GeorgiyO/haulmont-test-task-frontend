@@ -2,7 +2,7 @@ import React from "react";
 import {API} from "/src/model/endpoints/bank";
 import {Link} from "react-router-dom";
 
-export function BanksList() {
+export function BankList() {
 
     const [content, setContent] = React.useState("...loading");
 

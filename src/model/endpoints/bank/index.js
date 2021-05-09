@@ -8,8 +8,8 @@ export function Bank(name) {
     this.name = name;
 }
 
-export function BankTemplate(name) {
-    this.name = new Observable(name);
+export function BankTemplate() {
+    this.name = new Observable();
 }
 BankTemplate.prototype.toInstance = function () {
     return new Bank(this.name.get());

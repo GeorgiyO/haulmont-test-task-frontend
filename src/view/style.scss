@@ -45,7 +45,7 @@ a, a:visited {
   }
 
   &:hover {
-    $color: mix($font-color, $font-color-reversed, 20);
+    $color: mix($font-color, $font-color-reversed, 50);
     color: $color;
     @include underline($color, $underlineSize);
   }
@@ -154,11 +154,11 @@ button, input[type=submit] {
 
   padding: 0 5%;
 
-  > a {
+  > a, > a:visited {
     color: $font-color-reversed;
     margin: 20px 20px;
 
-    :link {
+    &:link {
       @include underline($font-color-reversed, 1px);
     }
   }
