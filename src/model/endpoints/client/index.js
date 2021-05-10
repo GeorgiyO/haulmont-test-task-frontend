@@ -8,17 +8,19 @@ export function Client(passportNumber, firstName, secondName, patronymic, email,
     this.patronymic = patronymic;
     this.email = email;
     this.phone = phone;
-    this.bank = bank;
+    if (bank) {
+        this.bank = bank;
+    }
 }
 
 export function ClientTemplate() {
-    this.passportNumber = new Observable();
-    this.firstName = new Observable();
-    this.secondName = new Observable();
-    this.patronymic = new Observable();
-    this.email = new Observable();
-    this.phone = new Observable();
-    this.bank = new Observable();
+    this.passportNumber = new Observable("");
+    this.firstName = new Observable("");
+    this.secondName = new Observable("");
+    this.patronymic = new Observable("");
+    this.email = new Observable("");
+    this.phone = new Observable("");
+    this.bank = new Observable(null);
 }
 ClientTemplate.prototype.toInstance = function () {
     return new Client(

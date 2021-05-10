@@ -15,6 +15,11 @@ $main-color: #00c4ff;
   border-bottom: $color solid $size;
 }
 
+@mixin font() {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-weight: 100;
+}
+
 * {
   box-sizing: border-box;
   @include log();
@@ -25,9 +30,8 @@ html, body, #root {
 }
 
 body {
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  font-size: 1.25rem;
-  font-weight: 100;
+  @include font();
+  font-size: 20px;
   margin: 0;
   padding: 0;
   color: $font-color;
@@ -82,6 +86,30 @@ button, input[type=submit] {
   }
 }
 
+input {
+  @include font();
+  font-size: 20px;
+  -webkit-appearance: none;
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    @include font();
+    -webkit-text-fill-color: $font-color;
+    -webkit-box-shadow: $font-color-reversed;
+    transition: background-color 999999s ease-in-out 0s;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &[type="text"],
+  &[type="password"] {
+    letter-spacing: 1px;
+  }
+}
+
 #root {
   display: flex;
   flex-direction: column;
@@ -89,20 +117,20 @@ button, input[type=submit] {
   .content {
     flex: 1 0 auto;
   }
+
   .footer {
     flex-shrink: 0;
   }
 }
 
 .header {
-
-  box-shadow: 3px 0 7px rgba(0,0,0,.3);
+  box-shadow: 3px 0 7px rgba(0, 0, 0, .3);
   padding: 0 10%;
   background-color: mix($font-color, $font-color-reversed, 80);
 
   $underlineSize: 3px;
 
-  > a {
+  >a {
     color: $font-color-reversed;
     padding: 20px;
 
@@ -127,14 +155,48 @@ button, input[type=submit] {
 
   .entity-menu {
 
-    > nav {
+    >nav {
 
       margin-bottom: 20px;
       @include underline($font-color, 1px);
       padding-bottom: 20px;
 
-      > a {
+      >a {
         margin: 0 10px;
+      }
+    }
+  }
+
+  .add-page {
+
+    >.input-container {
+
+      margin-bottom: 15px;
+
+
+      >* {
+        margin: 0;
+      }
+
+      >p {
+        display: inline-block;
+        width: 200px;
+      }
+
+      >input {
+        display: inline-block;
+        width: 200px;
+      }
+
+      >.errors {
+        display: inline-block;
+        width: calc(100% - 400px);
+
+        >span {
+          font-size: 1rem;
+          color: #d22;
+          margin: 0 10px;
+        }
       }
     }
   }
@@ -144,7 +206,7 @@ button, input[type=submit] {
   position: relative;
   width: 100%;
   bottom: 0;
-  font-size: 1rem;
+  font-size: 16px;
 
   background-color: mix($font-color, $font-color-reversed, 80);
 
@@ -154,7 +216,7 @@ button, input[type=submit] {
 
   padding: 0 5%;
 
-  > a, > a:visited {
+  >a, >a:visited {
     color: $font-color-reversed;
     margin: 20px 20px;
 

@@ -24,9 +24,9 @@ export function AddBank() {
     };
 
     return (
-        <div>
+        <div className={"add-page"}>
             <h2>Add bank:</h2>
-            <Input type={"text"} valueRef={template.name} errorsRef={errors}/>
+            <Input type={"text"} valueRef={template.name} errorsRef={errors} label={"name"}/>
             <button onClick={addBank}>Add</button>
         </div>
     );

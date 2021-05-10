@@ -1,4 +1,5 @@
 const PHONE_REG_EXP = new RegExp("^[+]?[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$");
+const EMAIL_REG_EXP = new RegExp("[^@ \\t\\r\\n]+@[^@ \\t\\r\\n]+\\.[^@ \\t\\r\\n]+");
 
 class Validator {
 
@@ -12,7 +13,7 @@ class Validator {
 
     checkType(type) {
         if (typeof this.value !== type) {
-            this.setInvalid(`field must be a ${type}`);
+            this.setInvalid(`must be a ${type}`);
             this.invalidType = true;
         }
     }
@@ -38,7 +39,9 @@ class Validator {
 export class StringValidator extends Validator {
 
     static notBlank250LengthMin(val) {
-        return this.instance.init(val)
+        return StringValidator
+            .instance
+            .init(val)
             .checkNotBlank()
             .checkLessOrEqualsThen(250)
             .errors;
@@ -54,7 +57,7 @@ export class StringValidator extends Validator {
     checkLessOrEqualsThen(size) {
         this.check(
             () => this.value.length <= size,
-            `field length must be less or equals then ${size}`
+            `length must be less or equals then ${size}`
         );
         return this;
     }
@@ -62,7 +65,15 @@ export class StringValidator extends Validator {
     checkNotBlank() {
         this.check(
             () => this.value.trim().length !== 0,
-            "field mustn't contains whitespaces"
+            "mustn't be blank"
+        );
+        return this;
+    }
+
+    checkNoWhitespaces() {
+        this.check(
+            () => this.value.split(new RegExp("\\s")).length === 1,
+            "mustn't contains whitespaces"
         );
         return this;
     }
@@ -70,7 +81,32 @@ export class StringValidator extends Validator {
     checkPhone() {
         this.check(
             () => PHONE_REG_EXP.test(this.value),
-            "field is not a phone"
+            "is not a phone"
+        );
+        return this;
+    }
+
+    checkEmail() {
+        this.check(
+            () => EMAIL_REG_EXP.test(this.value),
+            "is not an email"
+        );
+        return this;
+    }
+
+    checkPassport() {
+        this.check(
+            () => {
+                const noWhiteSpaces = this.value.split(new RegExp("\\s")).join("");
+                if (noWhiteSpaces.length !== 10) return false;
+                for (let ch of noWhiteSpaces) {
+                    if (!Number.isInteger(Number(ch))) {
+                        return false;
+                    }
+                }
+                return true;
+            },
+            "is not a passport"
         );
         return this;
     }
@@ -80,7 +116,9 @@ StringValidator.instance = new StringValidator();
 export class NumberValidator extends Validator {
 
     static positiveInt = function (val) {
-        return this.instance.init(val)
+        return NumberValidator
+            .instance
+            .init(val)
             .checkPositive()
             .checkInt()
             .errors;
@@ -98,7 +136,7 @@ export class NumberValidator extends Validator {
         let isNumber = !isNaN(this.value);
         this.check(
             () => isNumber,
-            "field must be a number"
+            "must be a number"
         );
         this.invalidType = !isNumber;
         return this;
@@ -107,7 +145,7 @@ export class NumberValidator extends Validator {
     checkPositive() {
         this.check(
             () => this.value > 0,
-            "field must be more then 0"
+            "must be more then 0"
         );
         return this;
     }
@@ -115,8 +153,9 @@ export class NumberValidator extends Validator {
     checkInt() {
         this.check(
             () => this.value === parseInt(this.value),
-            "field must be an integer"
+            "must be an integer"
         );
+        return this;
     }
 
 }

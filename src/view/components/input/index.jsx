@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Input({valueRef, type, errorsRef}) {
+export function Input({type, label, valueRef, errorsRef}) {
 
     const [value, setValue] = React.useState(valueRef.get());
     const [errors, setErrors] = React.useState(errorsRef.get());
@@ -23,7 +23,8 @@ export function Input({valueRef, type, errorsRef}) {
     const errorsSpans = errors.map((e, i) => <span key={i}>{e}</span>);
 
     return (
-        <div className={"inputContainer"}>
+        <div className={"input-container"}>
+            <p>{label}:</p>
             <input type={type} value={value} onChange={handleInput}/>
             <div className={"errors"}>{errorsSpans}</div>
         </div>
