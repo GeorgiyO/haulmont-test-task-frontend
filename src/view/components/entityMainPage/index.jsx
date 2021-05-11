@@ -1,10 +1,5 @@
 import React from "react";
-import {
-    useRouteMatch,
-    Switch,
-    Route,
-    Link,
-} from "react-router-dom";
+import {Link, Route, Switch, useRouteMatch,} from "react-router-dom";
 
 export function EntityMainPage({updatePage, addPage, instancePage, listPage, entityName}) {
 

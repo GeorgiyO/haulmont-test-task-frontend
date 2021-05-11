@@ -167,12 +167,11 @@ input {
     }
   }
 
-  .add-page {
+  .entity-form {
 
     >.input-container {
 
       margin-bottom: 15px;
-
 
       >* {
         margin: 0;
@@ -187,18 +186,23 @@ input {
         display: inline-block;
         width: 200px;
       }
+    }
 
-      >.errors {
-        display: inline-block;
-        width: calc(100% - 400px);
+    .errors {
+      display: inline-block;
+      width: calc(100% - 400px);
 
-        >span {
-          font-size: 1rem;
-          color: #d22;
-          margin: 0 10px;
-        }
+      >span {
+        font-size: 1rem;
+        color: #d22;
+        margin: 0 10px;
       }
     }
+  }
+
+  .entity-info {
+
+    margin-bottom: 20px;
   }
 }
 

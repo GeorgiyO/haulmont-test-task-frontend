@@ -1,18 +1,15 @@
 import React from "react";
-import {API} from "/src/model/endpoints/client";
+import {API} from "/src/model/entities/client";
 import {Link} from "react-router-dom";
 import {EntityList} from "/src/view/components/entityList";
 
 export function ClientList() {
     return <EntityList API={API}
                        label={"Clients"}
-                       entityToJsxFunction={(client) => {
-                           const {firstName, secondName, patronymic, passportNumber} = client;
-                           return (
-                               <Link to={"/clients/" + passportNumber}>
-                                   {`${firstName} ${secondName} ${patronymic}`}
-                               </Link>
-                           );
-                       }}
+                       entityToJsxFunction={(client) => (
+                           <Link to={"/clients/" + client.passportNumber}>
+                               {client.firstName} {client.secondName} {client.patronymic}
+                           </Link>
+                       )}
     />
 }

@@ -1,9 +1,5 @@
 import React from "react";
-import {
-    Switch,
-    Route,
-    Redirect
-} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 
 import {Banks} from "./banks";
 import {Overview} from "./overview";

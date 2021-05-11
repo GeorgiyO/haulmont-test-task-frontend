@@ -1,9 +1,7 @@
 import React from "react";
 import {useHistory, useParams} from "react-router-dom";
-import {API, BankTemplate} from "/src/model/endpoints/bank";
-import {StringValidator} from "/src/model/validations";
-import {Input} from "/src/view/components/input";
-import {Observable} from "/src/domain/observable";
+import {API, BankTemplate} from "/src/model/entities/bank";
+import {BankForm} from "../form";
 
 export function UpdateBank() {
 
@@ -15,27 +13,17 @@ export function UpdateBank() {
     React.useEffect(() => {
         API.getById(id).then((bank) => {
 
-            const template = new BankTemplate(bank.name);
-            const errors = new Observable([]);
+            const template = new BankTemplate().fromInstance(bank);
 
             const updateBank = function () {
-
-                errors.set(StringValidator.notBlank250LengthMin(template.name.get()));
-
-                if (errors.get().length === 0) {
+                if (template.validate()) {
                     API.update(template.toInstance(), id).then((bank) => {
                         history.push("/banks/" + bank.id);
                     });
                 }
             };
 
-            setContent(
-                <div>
-                    <h2>Update bank:</h2>
-                    <Input type={"text"} valueRef={template.name} errorsRef={errors}/>
-                    <button onClick={updateBank}>Update</button>
-                </div>
-            );
+            setContent(<BankForm template={template} label={"Update bank"} buttonLabel={"Update"} action={updateBank}/>);
         });
     }, []);
 

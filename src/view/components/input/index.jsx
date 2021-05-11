@@ -13,7 +13,7 @@ export function Input({type, label, valueRef, errorsRef}) {
             valueRef.consumers.delete(setValue);
             errorsRef.consumers.delete(setErrors);
         }
-    }, []);
+    }, [valueRef, errorsRef]);
 
     const handleInput = (e) => {
         errorsRef.set([]);
@@ -25,7 +25,7 @@ export function Input({type, label, valueRef, errorsRef}) {
     return (
         <div className={"input-container"}>
             <p>{label}:</p>
-            <input type={type} value={value} onChange={handleInput}/>
+            <input type={type} value={value} onInput={handleInput}/>
             <div className={"errors"}>{errorsSpans}</div>
         </div>
     );

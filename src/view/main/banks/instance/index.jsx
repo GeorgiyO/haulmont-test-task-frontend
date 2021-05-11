@@ -1,38 +1,11 @@
 import React from "react";
-import {
-    useParams,
-    useHistory
-} from "react-router-dom";
-import {API} from "/src/model/endpoints/bank";
+import {useHistory, useParams} from "react-router-dom";
+import {API} from "/src/model/entities/bank";
+import {EntityPage} from "../../../components/entityPage";
 
 export function BankInstance() {
-
-    const history = useHistory();
-    const {id} = useParams();
-
-    const [content, setContent] = React.useState("...loading");
-
-    const deleteInstance = function () {
-        API.delete(id).then(() => {
-            history.push("/banks");
-        });
-    }
-
-    const updateInstance = function () {
-        history.push("/banks/update/" + id);
-    }
-
-    React.useEffect(() => {
-        API.getById(id).then((bank) => {
-            setContent(
-                <div>
-                    <p>{bank.name}</p>
-                    <button className={"red"} onClick={deleteInstance}>Delete</button>
-                    <button onClick={updateInstance}>Change</button>
-                </div>
-            )
-        });
-    }, []);
-
-    return content;
+    return <EntityPage API={API}
+                       url={"/banks"}
+                       entityToJsxFunction={(bank) => <p>{bank.name}</p>}
+    />;
 }
