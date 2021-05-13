@@ -8,7 +8,7 @@ export function CreditList() {
                        label={"Credits"}
                        entityToJsxFunction={(credit) => (
                            <Link to={"/credits/" + credit.id}>
-                               {credit.bank.name} - {credit.limit} - {credit.percentage}
+                               Bank: {credit.bank.name}; Limit: {credit.limit}; Percentage: {credit.percentage}%
                            </Link>
                        )}
     />

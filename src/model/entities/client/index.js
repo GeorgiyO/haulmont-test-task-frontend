@@ -21,7 +21,7 @@ export function ClientTemplate() {
     this.patronymic = new Observable("");
     this.email = new Observable("");
     this.phone = new Observable("");
-    this.bankId = new Observable("");
+    this.bank = new Observable({});
     this.errors = this.getErrorsRefs();
 }
 
@@ -35,17 +35,16 @@ ClientTemplate.prototype = {
             this.patronymic.get(),
             this.email.get(),
             this.phone.get(),
-            {id: Number.parseInt(this.bankId.get())}
+            this.bank.get()
         );
     },
 
     fromInstance(instance) {
-        for (let key of ["firstName", "secondName", "patronymic", "email", "phone"]) {
+        ["firstName", "secondName", "patronymic", "email", "phone"].forEach((key) => {
             this[key].set(instance[key]);
-        }
-        this.bankId.set(instance.bank.id);
-
-        let passport = String(instance.bank.id);
+        });
+        this.bank.set(instance.bank);
+        let passport = String(instance.client.passportNumber);
         passport = "0".repeat(10 - passport.length) + passport;
         this.passportNumber.set(passport);
         return this;
@@ -60,8 +59,8 @@ ClientTemplate.prototype = {
     },
 
     validate() {
-        ["firstName", "secondName", "patronymic"].forEach((nameProp) => {
-            this.errors[nameProp].set(StringValidator.notBlank250LengthMin(this[nameProp].get()));
+        this.forEachNameProp((key) => {
+            this.errors[key].set(StringValidator.notBlank250LengthMin(this[key].get()));
         })
         this.errors.passportNumber.set(
             new StringValidator()
@@ -93,6 +92,10 @@ ClientTemplate.prototype = {
             }
         }
         return true;
+    },
+
+    forEachNameProp(callback) {
+        ["firstName", "secondName", "patronymic"].forEach(callback);
     }
 }
 

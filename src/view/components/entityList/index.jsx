@@ -21,7 +21,9 @@ export function EntityList({API, label, entityToJsxFunction}) {
     return (
         <div>
             <p>{label}:</p>
-            {content}
+            <div className={"entity-list"}>
+                {content}
+            </div>
         </div>
     );
 }

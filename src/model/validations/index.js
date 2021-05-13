@@ -111,7 +111,39 @@ export class StringValidator extends Validator {
         return this;
     }
 }
+
 StringValidator.instance = new StringValidator();
+
+export class DateValidator extends Validator {
+
+    static future(val) {
+        return DateValidator
+            .instance
+            .init(val)
+            .checkFuture()
+            .errors;
+    }
+
+    init(value) {
+        super.init();
+        this.value = new Date(value);
+        if (this.value.toString() === "Invalid Date") {
+            this.invalidType = true;
+            this.errors.push("must be a date in format YYYY-MM-DD");
+        }
+        return this;
+    }
+
+    checkFuture() {
+        this.check(
+            () => this.value.getTime() > new Date().getTime(),
+            "must be a future"
+        );
+        return this;
+    }
+}
+
+DateValidator.instance = new DateValidator();
 
 export class NumberValidator extends Validator {
 
@@ -134,11 +166,10 @@ export class NumberValidator extends Validator {
         super.init();
         this.value = Number(value);
         let isNumber = !isNaN(this.value);
-        this.check(
-            () => isNumber,
-            "must be a number"
-        );
-        this.invalidType = !isNumber;
+        if (!isNumber) {
+            this.invalidType = true;
+            this.errors.push("must be a number");
+        }
         return this;
     }
 
@@ -159,5 +190,6 @@ export class NumberValidator extends Validator {
     }
 
 }
+
 NumberValidator.instance = new NumberValidator();
 

@@ -17,7 +17,7 @@ export function Credit(percentage, limit, bank) {
 export function CreditTemplate() {
     this.percentage = new Observable("");
     this.limit = new Observable("");
-    this.bankId = new Observable("");
+    this.bank = new Observable({});
     this.errors = this.getErrorsRefs();
 }
 
@@ -27,14 +27,14 @@ CreditTemplate.prototype = {
         return new Credit(
             Number.parseFloat(this.percentage.get()),
             Number.parseInt(this.limit.get()),
-            {id: Number.parseInt(this.bankId.get())}
+            this.bank.get()
         )
     },
 
     fromInstance(instance) {
         this.percentage.set(instance.percentage)
         this.limit.set(instance.limit);
-        this.bankId.set(instance.bank.id);
+        this.bank.set(instance.bank);
         return this;
     },
 
@@ -54,10 +54,6 @@ CreditTemplate.prototype = {
                 .errors
         );
         this.errors.limit.set(NumberValidator.positiveInt(this.limit.get()));
-
-        BankAPI.getById(this.bankId.get()).then((result) => {
-            this.errors.bankId.set("invalid bank")
-        })
 
         return this.isValid();
     },

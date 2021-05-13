@@ -18,7 +18,7 @@ export function Main() {
                 <Route path={"/credits"} component={Credits}/>
                 <Route path={"/banks"} component={Banks}/>
                 <Route path={"/clients"} component={Clients}/>
-                <Route paht={"/credits-offers"} component={CreditOffers}/>
+                <Route path={"/credit-offers"} component={CreditOffers}/>
             </Switch>
         </div>
     );

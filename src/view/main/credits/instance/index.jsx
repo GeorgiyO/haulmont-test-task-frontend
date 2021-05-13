@@ -8,8 +8,8 @@ export function CreditInstance() {
                        url={"/credits"}
                        entityToJsxFunction={(credit) => (
                            <div className={"entity-info"}>
-                               <Link to={"/banks/" + credit.bank.id}>{credit.bank.name}</Link>
-                               <p>Percentage: {credit.percentage}</p>
+                               <p>Bank: <Link to={"/banks/" + credit.bank.id}>{credit.bank.name}</Link></p>
+                               <p>Percentage: {credit.percentage}%</p>
                                <p>Limit: {credit.limit}</p>
                            </div>
                        )}

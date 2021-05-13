@@ -15,6 +15,10 @@ $main-color: #00c4ff;
   border-bottom: $color solid $size;
 }
 
+@mixin overline($color, $size) {
+  border-top: $color solid $size;
+}
+
 @mixin font() {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-weight: 100;
@@ -110,6 +114,16 @@ input {
   }
 }
 
+select {
+  background-color: transparent;
+  padding: 0 1em 0 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+}
+
 #root {
   display: flex;
   flex-direction: column;
@@ -130,7 +144,7 @@ input {
 
   $underlineSize: 3px;
 
-  >a {
+  a {
     color: $font-color-reversed;
     padding: 20px;
 
@@ -155,13 +169,13 @@ input {
 
   .entity-menu {
 
-    >nav {
+    nav {
 
       margin-bottom: 20px;
       @include underline($font-color, 1px);
       padding-bottom: 20px;
 
-      >a {
+      a {
         margin: 0 10px;
       }
     }
@@ -169,40 +183,85 @@ input {
 
   .entity-form {
 
-    >.input-container {
+    .input-container, .select-container {
 
       margin-bottom: 15px;
 
-      >* {
+      * {
         margin: 0;
       }
 
-      >p {
-        display: inline-block;
-        width: 200px;
-      }
-
-      >input {
+      p {
         display: inline-block;
         width: 200px;
       }
     }
 
-    .errors {
+    .input-container input {
       display: inline-block;
+      width: 400px;
+    }
+
+    .select-container select {
+      display: inline-block;
+      width: 400px;
+    }
+
+    .errors {
+      display: inline;
       width: calc(100% - 400px);
 
-      >span {
+      span {
         font-size: 1rem;
         color: #d22;
         margin: 0 10px;
       }
+    }
+
+    .credit-offer-extra-info {
+      margin-bottom: 20px;
     }
   }
 
   .entity-info {
 
     margin-bottom: 20px;
+
+    .payment-graph {
+
+      display: flex;
+      flex-direction: column;
+
+      .element {
+
+        padding: 10px 0;
+
+        $line-size: 1px;
+        @include underline($font-color, $line-size);
+
+        &:nth-child(1) {
+          @include overline($font-color, $line-size);
+        }
+      }
+    }
+  }
+
+  .entry {
+
+    .info, .value {
+      display: inline-block;
+    }
+
+    .info {
+      width: 200px;
+    }
+  }
+
+  .entity-list {
+
+    * {
+      margin-top: 10px;
+    }
   }
 }
 
@@ -220,7 +279,7 @@ input {
 
   padding: 0 5%;
 
-  >a, >a:visited {
+  a, a:visited {
     color: $font-color-reversed;
     margin: 20px 20px;
 
