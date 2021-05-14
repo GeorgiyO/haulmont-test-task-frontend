@@ -21,8 +21,17 @@ export function CreditOfferTemplate() {
     this.paymentAmount = new Observable("");
     this.client = new Observable({});
     this.credit = new Observable({});
-    this.paymentGraph = [];
     this.errors = this.getErrorsRefs();
+
+    this.paymentGraph = [];
+    this.monthPayment = new Observable(0);
+
+    this.paymentAmount.watch((val) => {
+        this.updateMonthPayment(val, this.credit.get().percentage);
+    });
+    this.credit.watch((credit) => {
+        this.updateMonthPayment(this.paymentAmount.get(), credit.percentage);
+    })
 }
 
 CreditOfferTemplate.prototype = {
@@ -57,7 +66,7 @@ CreditOfferTemplate.prototype = {
         this.errors.paymentAmount.set(
             NumberValidator.positiveInt(this.paymentAmount.get())
         );
-        this.paymentGraph.validate();
+        this.paymentGraph.forEach((pg) => pg.validate());
         return this.isValid();
     },
 
@@ -68,6 +77,28 @@ CreditOfferTemplate.prototype = {
             }
         }
         return this.paymentGraph.isValid();
+    },
+
+    addGraphElement() {
+        this.paymentGraph.push(new PaymentGraphElementTemplate());
+        this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage);
+    },
+
+    removeGraphElement(index) {
+        this.paymentGraph.splice(index, 1);
+        this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage);
+    },
+
+    updateMonthPayment(paymentAmount, percentage) {
+        let length = this.paymentGraph.length;
+
+        let val = length === 0 ?
+                  0 :
+              paymentAmount / length;
+
+        val += val * percentage / 100;
+
+        this.monthPayment.set(val);
     }
 
 }

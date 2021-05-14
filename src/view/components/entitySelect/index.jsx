@@ -16,10 +16,10 @@ export function EntitySelect({
     const setRefValue = (json) => valueRef.set(JSON.parse(json));
 
     React.useEffect(() => {
-        errorRef?.consumers.add(setError);
+        errorRef?.watch(setError);
 
         return function () {
-            errorRef?.consumers.delete(setError);
+            errorRef?.unwatch(setError);
         }
     }, [valueRef, errorRef]);
 
@@ -28,6 +28,7 @@ export function EntitySelect({
             setOptions(entities.map((entity, i) => (
                 <option key={i} value={JSON.stringify(entity)}>{entityToText(entity)}</option>
             )));
+            valueRef.set(entities[0]);
         });
     }, []);
 

@@ -1,23 +1,24 @@
 import React from "react";
 
-export function Input({type, label, valueRef, errorsRef}) {
+export function Input({type, label, valueRef, errorsRef, inputDecorator = (val) => val}) {
 
     const [value, setValue] = React.useState(valueRef.get());
     const [errors, setErrors] = React.useState(errorsRef.get());
 
     React.useEffect(() => {
-        valueRef.consumers.add(setValue);
-        errorsRef.consumers.add(setErrors);
+        valueRef.watch(setValue);
+        errorsRef.watch(setErrors);
 
         return function () {
-            valueRef.consumers.delete(setValue);
-            errorsRef.consumers.delete(setErrors);
+            valueRef.unwatch(setValue);
+            errorsRef.unwatch(setErrors);
         }
     }, [valueRef, errorsRef]);
 
     const handleInput = (e) => {
+        const val = inputDecorator(e.target.value);
         errorsRef.set([]);
-        valueRef.set(e.target.value);
+        valueRef.set(val);
     }
 
     const errorsSpans = errors.map((e, i) => <span key={i}>{e}</span>);
@@ -29,4 +30,10 @@ export function Input({type, label, valueRef, errorsRef}) {
             <div className={"errors"}>{errorsSpans}</div>
         </div>
     );
+}
+
+Input.positiveNumberDecorator = (val) => {
+    val = Number(val);
+    if (val < 0) return 0;
+    return val;
 }

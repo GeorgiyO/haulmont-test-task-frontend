@@ -88,6 +88,10 @@ button, input[type=submit] {
     box-shadow: inset 0 0 0 2em $main-color;
     transition-duration: 0.05s;
   }
+
+  &.small {
+    font-size: 12px;
+  }
 }
 
 input {
@@ -219,30 +223,54 @@ select {
     }
 
     .credit-offer-extra-info {
-      margin-bottom: 20px;
+      position: fixed;
+      top: 300px;
+      right: calc(10% + 100px);
+    }
+
+    .payment-graph-form {
+      width: 750px;
     }
   }
 
-  .entity-info {
+  .payment-graph {
 
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 
-    .payment-graph {
+    .element {
 
-      display: flex;
-      flex-direction: column;
+      $padding-value: 30px;
+      padding: $padding-value 0;
 
-      .element {
+      $line-size: 1px;
+      @include underline($font-color, $line-size);
 
-        padding: 10px 0;
+      &:nth-child(1) {
+        @include overline($font-color, $line-size);
+      }
 
-        $line-size: 1px;
-        @include underline($font-color, $line-size);
+      &.with-close-button {
+        position: relative;
 
-        &:nth-child(1) {
-          @include overline($font-color, $line-size);
+        button.close-button {
+          position: absolute;
+          right: $padding-value;
+          top: $padding-value;
+          margin: 0;
         }
       }
+    }
+
+    .entity-list {
+
+      * {
+        margin-top: 10px;
+      }
+    }
+
+    .entity-info {
+      margin-bottom: 20px;
     }
   }
 
@@ -254,13 +282,6 @@ select {
 
     .info {
       width: 200px;
-    }
-  }
-
-  .entity-list {
-
-    * {
-      margin-top: 10px;
     }
   }
 }
