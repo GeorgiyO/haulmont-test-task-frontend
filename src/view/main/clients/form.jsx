@@ -12,7 +12,7 @@ export function ClientForm({template, label, buttonLabel, action}) {
 
             <Input type={"number"} label={"Passport number"} valueRef={template.passportNumber}
                    errorsRef={errors.passportNumber}
-                   inputDecorator={Input.positiveNumberDecorator}
+                   inputDecorator={Input.positiveNumberAsString}
             />
             <Input type={"text"} label={"Email"} valueRef={template.email} errorsRef={errors.email}/>
             <Input type={"text"} label={"Phone"} valueRef={template.phone} errorsRef={errors.phone}/>

@@ -1,7 +1,7 @@
 import React from "react";
 import {Observable} from "src/domain/observable";
 
-export function Input({type, label, valueRef, errorsRef, inputDecorator = (val) => val}) {
+export function Input({type, label, valueRef, errorsRef = new Observable([]), inputDecorator = (val) => val}) {
 
     const [value, setValue] = Observable.useWatch(valueRef);
     const [errors, setErrors] = Observable.useWatch(errorsRef);
@@ -27,4 +27,4 @@ Input.positiveNumber = (val) => {
     return val;
 }
 
-Input.positiveNumberDecorator = (val) => Input.positiveNumber(val).toString();
+Input.positiveNumberAsString = (val) => Input.positiveNumber(val).toString();

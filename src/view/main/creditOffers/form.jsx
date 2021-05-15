@@ -28,6 +28,7 @@ export function CreditOfferForm({template, label, buttonLabel, action}) {
                        return val.toString();
                    }}
             />
+            <PaymentGraphTemplateCreator template={template}/>
             <PaymentGraphForm template={template}/>
             <button onClick={action}>{buttonLabel}</button>
         </div>
@@ -58,16 +59,14 @@ function ExtraInfo({template}) {
 
 function PaymentGraphForm({template}) {
 
-    const forceUpdate = useForceUpdate();
+    Observable.useWatch(template.paymentGraphLength);   // update on change
 
     const addElement = () => {
         template.addGraphElement();
-        forceUpdate();
     };
 
     const removeElement = (index) => {
         template.removeGraphElement(index);
-        forceUpdate();
     }
 
     return (
@@ -78,7 +77,7 @@ function PaymentGraphForm({template}) {
                                              template={template}/>
                 ))}
             </div>
-            <button onClick={addElement}>Add element</button>
+            <button onClick={addElement}>Add graph element</button>
         </div>
     )
 }
@@ -111,13 +110,65 @@ function PaymentGraphElementForm({element, removeElement, template}) {
     );
 }
 
+function PaymentGraphTemplateCreator({template}) {
+
+    const paymentDay = new Observable(new Date().getUTCDay() + 1);
+    const paymentGraphCount = new Observable(template.paymentGraphLength.get());
+
+    React.useEffect(() => {
+
+        const setPaymentGraphCount = paymentGraphCount.set.bind(paymentGraphCount);
+        template.paymentGraphLength.watch(setPaymentGraphCount);
+
+        return function () {
+            template.paymentGraphLength.unwatch(setPaymentGraphCount);
+        }
+    }, []);
+
+    const createTemplate = () => {
+        const date = new Date();
+
+        const nextDate = function () {
+            date.setUTCMonth(date.getUTCMonth() + 1);
+            return date.toISOString().substring(0, 10);
+        }
+
+        const count = paymentGraphCount.get() - template.paymentGraph.length;
+
+        if (count < 0) {
+            for (let i = 0; i < -count; i++) {
+                template.removeGraphElement(template.paymentGraph.length - 1);
+            }
+        } else {
+            date.setUTCMonth(date.getUTCMonth() + 1);
+            for (let i = 0; i < count; i++) {
+                template.addGraphElement();
+                const created = template.paymentGraph[template.paymentGraph.length - 1];
+                created.date.set(nextDate());
+                console.log(created.date.get());
+            }
+        }
+    }
+
+    return (
+        <div className={"payment-graph-template-creator"}>
+            <p>Pattern creator:</p>
+            <Input type={"number"} label={"elements count"} valueRef={paymentGraphCount}
+                   inputDecorator={Input.positiveNumberAsString}
+            />
+            <Input type={"number"} label={"payment day"} valueRef={paymentDay}
+                   inputDecorator={(val) => {
+                       val = Input.positiveNumber(val);
+                       return Math.min(val, 30);
+                   }}
+            />
+            <button onClick={createTemplate}>Create</button>
+        </div>
+    )
+}
+
 function nextId() {
     return ++nextId.val;
 }
 
 nextId.val = Number.MIN_SAFE_INTEGER;
-
-function useForceUpdate() {
-    const [value, setValue] = React.useState(0); // integer state
-    return () => setValue((value) => ++value); // update the state to force render
-}

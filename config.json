@@ -1,5 +1,8 @@
 {
   "server": {
     "url": "http://localhost:8080"
+  },
+  "client": {
+    "rootUrl": "/porno"
   }
 }

@@ -10,7 +10,7 @@ import "./style.scss";
 
 function Root() {
     return (
-        <BrowserRouter>
+        <BrowserRouter basename={rootUrl}>
             <div className={"content"}>
                 <Header/>
                 <Main/>
