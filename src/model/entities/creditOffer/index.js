@@ -4,12 +4,15 @@ import {NumberValidator, StringValidator} from "../../validations";
 import {PaymentGraphElementTemplate} from "../paymentGraphElement";
 
 export function CreditOffer(paymentAmount, client, credit, paymentGraph) {
+
+    console.log(paymentGraph);
+
     Object.defineProperty(this, "id", {
         enumerable: false
     });
     this.paymentAmount = paymentAmount;
     this.paymentGraph = paymentGraph;
-    if (client && !isNaN(client.id)) {
+    if (client && !isNaN(client.passportNumber)) {
         this.client = client;
     }
     if (credit && !isNaN(credit.id)) {
@@ -18,19 +21,23 @@ export function CreditOffer(paymentAmount, client, credit, paymentGraph) {
 }
 
 export function CreditOfferTemplate() {
-    this.paymentAmount = new Observable("");
+    this.paymentAmount = new Observable("0");
     this.client = new Observable({});
-    this.credit = new Observable({});
+    this.credit = new Observable({percentage: 0});
     this.errors = this.getErrorsRefs();
 
     this.paymentGraph = [];
     this.monthPayment = new Observable(0);
+    this.paymentGraphLength = new Observable(0);
 
     this.paymentAmount.watch((val) => {
-        this.updateMonthPayment(val, this.credit.get().percentage);
+        this.updateMonthPayment(val, this.credit.get().percentage, this.paymentGraphLength.get());
     });
     this.credit.watch((credit) => {
-        this.updateMonthPayment(this.paymentAmount.get(), credit.percentage);
+        this.updateMonthPayment(this.paymentAmount.get(), credit.percentage, this.paymentGraphLength.get());
+    });
+    this.paymentGraphLength.watch((length) => {
+        this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage, length);
     })
 }
 
@@ -67,34 +74,57 @@ CreditOfferTemplate.prototype = {
             NumberValidator.positiveInt(this.paymentAmount.get())
         );
         this.paymentGraph.forEach((pg) => pg.validate());
+
         return this.isValid();
     },
 
     isValid() {
+
         for (let errArr of Object.values(this.errors)) {
             if (errArr.get().length !== 0) {
                 return false;
             }
         }
-        return this.paymentGraph.isValid();
+
+        for (let paymentGraphElement of this.paymentGraph) {
+            if (!paymentGraphElement.isValid()) {
+                return false;
+            }
+        }
+        ;
+
+        return true;
     },
 
     addGraphElement() {
-        this.paymentGraph.push(new PaymentGraphElementTemplate());
-        this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage);
+        const element = new PaymentGraphElementTemplate();
+
+        element.monthListener = this.monthPayment.watch((val) => {
+            const percentage = this.credit.get().percentage;
+
+            const percentagePayment = val * percentage / 100;
+            const bodyPayment = val - percentagePayment;
+
+            element.bodyPayment.set(bodyPayment);
+            element.percentagePayment.set(percentagePayment);
+        });
+
+        this.paymentGraph.push(element);
+        this.paymentGraphLength.set(this.paymentGraph.length);
     },
 
     removeGraphElement(index) {
-        this.paymentGraph.splice(index, 1);
-        this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage);
+        const [element] = this.paymentGraph.splice(index, 1);
+
+        this.monthPayment.unwatch(element.monthListener);
+
+        this.paymentGraphLength.set(this.paymentGraph.length);
     },
 
-    updateMonthPayment(paymentAmount, percentage) {
-        let length = this.paymentGraph.length;
-
+    updateMonthPayment(paymentAmount, percentage, length) {
         let val = length === 0 ?
                   0 :
-              paymentAmount / length;
+                  paymentAmount / length;
 
         val += val * percentage / 100;
 

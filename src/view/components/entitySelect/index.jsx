@@ -1,27 +1,19 @@
 import React from "react";
+import {Observable} from "../../../domain/observable";
 
 export function EntitySelect({
     label,
     valueRef,
-    allowNone = false,
     entitiesSupplier,
     entityToText,
-    errorRef
+    allowNone = false,
+    errorsRef = new Observable([""])
 }) {
 
     const [options, setOptions] = React.useState([]);
     const [value, setValue] = React.useState(valueRef.get());
-    const [error, setError] = React.useState("");
 
-    const setRefValue = (json) => valueRef.set(JSON.parse(json));
-
-    React.useEffect(() => {
-        errorRef?.watch(setError);
-
-        return function () {
-            errorRef?.unwatch(setError);
-        }
-    }, [valueRef, errorRef]);
+    const [errors] = Observable.useWatch(errorsRef);
 
     React.useEffect(() => {
         entitiesSupplier().then((entities) => {
@@ -31,6 +23,9 @@ export function EntitySelect({
             valueRef.set(entities[0]);
         });
     }, []);
+
+
+    const setRefValue = (json) => valueRef.set(JSON.parse(json));
 
     const handleSelect = (e) => {
         setRefValue(e.target.value);
@@ -44,7 +39,7 @@ export function EntitySelect({
                 {allowNone && <option value={""}>None</option>}
                 {options}
             </select>
-            <div className={"errors"}>{error}</div>
+            <div className={"errors"}>{errors.map((e, i) => <span key={i}>{e}</span>)}</div>
         </div>
     )
 }

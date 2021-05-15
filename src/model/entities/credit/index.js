@@ -15,8 +15,8 @@ export function Credit(percentage, limit, bank) {
 }
 
 export function CreditTemplate() {
-    this.percentage = new Observable("");
-    this.limit = new Observable("");
+    this.percentage = new Observable("0");
+    this.limit = new Observable("0");
     this.bank = new Observable({});
     this.errors = this.getErrorsRefs();
 }

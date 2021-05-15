@@ -129,7 +129,7 @@ export class DateValidator extends Validator {
         this.value = new Date(value);
         if (this.value.toString() === "Invalid Date") {
             this.invalidType = true;
-            this.errors.push("must be a date in format YYYY-MM-DD");
+            this.errors.push("mustn't be empty");
         }
         return this;
     }

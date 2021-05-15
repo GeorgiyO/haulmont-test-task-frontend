@@ -11,7 +11,9 @@ export function AddCreditOffer() {
 
     const addCreditOffer = function () {
         if (template.validate()) {
+            console.log(template.toInstance());
             API.add(template.toInstance()).then((creditOffer) => {
+                console.log(creditOffer);
                 history.push("/credit-offers/" + creditOffer.id);
             });
         }

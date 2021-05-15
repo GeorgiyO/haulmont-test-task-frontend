@@ -2,26 +2,22 @@ import {RESTApi} from "../../entityRESTTemplate";
 import {Observable} from "/src/domain/observable";
 import {StringValidator} from "../../validations";
 
-export function Client(passportNumber, firstName, secondName, patronymic, email, phone, bank) {
+export function Client(passportNumber, firstName, secondName, patronymic, email, phone) {
     this.passportNumber = passportNumber;
     this.firstName = firstName;
     this.secondName = secondName;
     this.patronymic = patronymic;
     this.email = email;
     this.phone = phone;
-    if (bank && !isNaN(bank.id)) {
-        this.bank = bank;
-    }
 }
 
 export function ClientTemplate() {
-    this.passportNumber = new Observable("");
+    this.passportNumber = new Observable("0");
     this.firstName = new Observable("");
     this.secondName = new Observable("");
     this.patronymic = new Observable("");
     this.email = new Observable("");
     this.phone = new Observable("");
-    this.bank = new Observable({});
     this.errors = this.getErrorsRefs();
 }
 
@@ -34,8 +30,7 @@ ClientTemplate.prototype = {
             this.secondName.get(),
             this.patronymic.get(),
             this.email.get(),
-            this.phone.get(),
-            this.bank.get()
+            this.phone.get()
         );
     },
 
@@ -43,7 +38,6 @@ ClientTemplate.prototype = {
         ["firstName", "secondName", "patronymic", "email", "phone"].forEach((key) => {
             this[key].set(instance[key]);
         });
-        this.bank.set(instance.bank);
         let passport = String(instance.client.passportNumber);
         passport = "0".repeat(10 - passport.length) + passport;
         this.passportNumber.set(passport);

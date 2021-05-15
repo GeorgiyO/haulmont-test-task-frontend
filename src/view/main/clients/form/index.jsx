@@ -11,12 +11,13 @@ export function ClientForm({template, label, buttonLabel, action}) {
             <Input type={"text"} label={"First name"} valueRef={template.firstName} errorsRef={errors.firstName}/>
             <Input type={"text"} label={"Second name"} valueRef={template.secondName} errorsRef={errors.secondName}/>
             <Input type={"text"} label={"Patronymic"} valueRef={template.patronymic} errorsRef={errors.patronymic}/>
-            <Input type={"text"} label={"Passport number"} valueRef={template.passportNumber} errorsRef={errors.passportNumber}/>
+
+            <Input type={"number"} label={"Passport number"} valueRef={template.passportNumber}
+                   errorsRef={errors.passportNumber}
+                   inputDecorator={Input.positiveNumberDecorator}
+            />
             <Input type={"text"} label={"Email"} valueRef={template.email} errorsRef={errors.email}/>
             <Input type={"text"} label={"Phone"} valueRef={template.phone} errorsRef={errors.phone}/>
-            <EntitySelect label={"Bank"} valueRef={template.bank} allowNone
-                          entitiesSupplier={BankAPI.getAll} entityToText={(bank) => bank.name}
-            />
             <button onClick={action}>{buttonLabel}</button>
         </div>
     )

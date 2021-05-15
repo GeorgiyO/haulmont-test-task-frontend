@@ -6,16 +6,15 @@ export function PaymentGraphElement(date, totalPayment, bodyPayment, percentageP
         enumerable: false
     });
     this.date = date;
-    this.totalPayment = totalPayment;
     this.bodyPayment = bodyPayment;
     this.percentagePayment = percentagePayment;
+    this.totalPayment = bodyPayment + percentagePayment;
 }
 
 export function PaymentGraphElementTemplate() {
     this.date = new Observable("");
-    this.totalPayment = new Observable("");
-    this.bodyPayment = new Observable("");
-    this.percentagePayment = new Observable("");
+    this.bodyPayment = new Observable("0");
+    this.percentagePayment = new Observable("0");
     this.errors = this.getErrorsRefs();
 }
 
@@ -24,7 +23,7 @@ PaymentGraphElementTemplate.prototype = {
     toInstance() {
         return new PaymentGraphElement(
             this.date.get(),
-            Number.parseInt(this.totalPayment.get()),
+            Number.parseInt(this.bodyPayment.get() + this.percentagePayment.get()),
             Number.parseInt(this.bodyPayment.get()),
             Number.parseInt(this.percentagePayment.get())
         );
@@ -48,7 +47,7 @@ PaymentGraphElementTemplate.prototype = {
 
     validate() {
         this.forEachPaymentProp((key) => {
-            this.errors[key].set(NumberValidator.positiveInt(this[key].get()));
+            this.errors[key].set(NumberValidator.positive(this[key].get()));
         });
         this.errors.date.set(DateValidator.future(this.date.get()));
         return this.isValid();
@@ -64,7 +63,7 @@ PaymentGraphElementTemplate.prototype = {
     },
 
     forEachPaymentProp(callback) {
-        ["totalPayment", "bodyPayment", "percentagePayment"].forEach(callback);
+        ["bodyPayment", "percentagePayment"].forEach(callback);
     }
 
 }

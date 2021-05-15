@@ -8,8 +8,12 @@ export function CreditForm({template, label, buttonLabel, action}) {
     return (
         <div className={"entity-form"}>
             <h2>{label}:</h2>
-            <Input type={"text"} label={"Percentage"} valueRef={template.percentage} errorsRef={errors.percentage}/>
-            <Input type={"text"} label={"Limit"} valueRef={template.limit} errorsRef={errors.limit}/>
+            <Input type={"number"} label={"Percentage"} valueRef={template.percentage} errorsRef={errors.percentage}
+                   inputDecorator={Input.positiveNumberDecorator}
+            />
+            <Input type={"number"} label={"Limit"} valueRef={template.limit} errorsRef={errors.limit}
+                   inputDecorator={Input.positiveNumberDecorator}
+            />
             <EntitySelect label={"Bank"} valueRef={template.bank}
                           entitiesSupplier={BanksAPI.getAll} entityToText={(bank) => bank.name}
             />
