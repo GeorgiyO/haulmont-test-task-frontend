@@ -1,7 +1,7 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-import "./model"; // init
-import * as view from "./view";
+import "src/model"; // init
+import * as view from "src/view";
 
 view.draw();

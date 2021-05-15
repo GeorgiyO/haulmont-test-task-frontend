@@ -43,6 +43,10 @@ module.exports = {
     resolve: {
         extensions: [
             ".jsx", ".js"
+        ],
+        modules: [
+            __dirname,
+            "node_modules"
         ]
     }
 }

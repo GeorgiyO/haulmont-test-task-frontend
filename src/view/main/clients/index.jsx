@@ -3,7 +3,7 @@ import {ClientList} from "./list";
 import {AddClient} from "./add";
 import {ClientInstance} from "./instance";
 import {UpdateClient} from "./update";
-import {EntityMainPage} from "/src/view/components/entityMainPage";
+import {EntityMainPage} from "src/view/components/entityMainPage";
 
 export function Clients() {
     return <EntityMainPage addPage={AddClient}
