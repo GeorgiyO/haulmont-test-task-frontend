@@ -83,7 +83,7 @@ function PaymentGraphForm({template}) {
             </div>
             <button onClick={addElement}>Add graph element</button>
         </div>
-    )
+    );
 }
 
 function PaymentGraphElementForm({element, removeElement, template}) {
@@ -154,7 +154,7 @@ function PaymentGraphTemplateCreator({template}) {
 
     return (
         <div className={"payment-graph-template-creator"}>
-            <p>Pattern creator:</p>
+            <p>Payment graph form fast creator:</p>
             <Input type={"number"} label={"elements count"} valueRef={paymentGraphCount}
                    inputDecorator={Input.positiveNumberAsString}
             />
