@@ -23,7 +23,8 @@ export function UpdateClient() {
                 }
             };
 
-            setContent(<ClientForm template={template} label={"Update client"} buttonLabel={"Update"} action={updateClient}/>);
+            setContent(<ClientForm template={template} label={"Update client"} buttonLabel={"Update"}
+                                   action={updateClient}/>);
         });
     }, []);
 

@@ -47,13 +47,13 @@ export class Observable {
         this.consumers.delete(consumer);
     }
 
-    get() {
-        return this.val;
-    }
-
     set(val) {
         this.consumers.forEach((foo) => foo(val, this.val));
         this.val = val;
+    }
+
+    get() {
+        return this.val;
     }
 
 }

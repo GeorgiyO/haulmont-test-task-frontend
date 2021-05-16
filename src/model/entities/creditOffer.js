@@ -25,10 +25,11 @@ export function CreditOfferTemplate() {
     this.client = new Observable({});
     this.credit = new Observable({percentage: 0});
     this.errors = this.getErrorsRefs();
-
     this.paymentGraph = [];
+
     this.monthPayment = new Observable(0);
     this.paymentGraphLength = new Observable(0);
+    this.graphPercentageSum = new Observable(0);
 
     this.paymentAmount.watch((val) => {
         this.updateMonthPayment(val, this.credit.get().percentage, this.paymentGraphLength.get());
@@ -38,7 +39,10 @@ export function CreditOfferTemplate() {
     });
     this.paymentGraphLength.watch((length) => {
         this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage, length);
-    })
+    });
+
+    this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage, this.paymentGraphLength.get());
+
 }
 
 CreditOfferTemplate.prototype = {
@@ -54,11 +58,12 @@ CreditOfferTemplate.prototype = {
 
     fromInstance(instance) {
         this.paymentAmount.set(instance.paymentAmount);
-        this.paymentGraph.set(instance.paymentGraph.map(
-            (pg) => new PaymentGraphElementTemplate().fromInstance(pg))
-        );
         this.client.set(instance.client);
         this.credit.set(instance.credit);
+        instance.paymentGraph.forEach((pge) => {
+            this.addGraphElement(new PaymentGraphElementTemplate().fromInstance(pge));
+        });
+        return this;
     },
 
     getErrorsRefs() {
@@ -91,22 +96,26 @@ CreditOfferTemplate.prototype = {
                 return false;
             }
         }
-        ;
 
         return true;
     },
 
-    addGraphElement() {
-        const element = new PaymentGraphElementTemplate();
+    addGraphElement(element = new PaymentGraphElementTemplate()) {
 
         element.monthListener = this.monthPayment.watch((val) => {
             const percentage = this.credit.get().percentage;
 
-            const percentagePayment = val * percentage / 100;
-            const bodyPayment = val - percentagePayment;
+            const bodyPayment = val / (1 + percentage / 100);
+            const percentagePayment = val - bodyPayment;
 
             element.bodyPayment.set(bodyPayment);
             element.percentagePayment.set(percentagePayment);
+        });
+
+        element.percentagePayment.watch((newVal, oldVal) => {
+            this.graphPercentageSum.set(
+                this.graphPercentageSum.get() + newVal - oldVal
+            );
         });
 
         this.paymentGraph.push(element);
@@ -126,7 +135,7 @@ CreditOfferTemplate.prototype = {
                   0 :
                   paymentAmount / length;
 
-        val += val * percentage / 100;
+        val *= 1 + percentage / 100;
 
         this.monthPayment.set(val);
     }

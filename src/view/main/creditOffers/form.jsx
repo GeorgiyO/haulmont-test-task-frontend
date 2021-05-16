@@ -41,6 +41,7 @@ function ExtraInfo({template}) {
     const [monthPayment] = Observable.useWatch(template.monthPayment);
     const [credit] = Observable.useWatch(template.credit);
     const [length] = Observable.useWatch(template.paymentGraphLength);
+    const [graphPercentageSum] = Observable.useWatch(template.graphPercentageSum);
 
     const percentage = credit.percentage;
 
@@ -49,12 +50,15 @@ function ExtraInfo({template}) {
 
     return (
         <div className={"credit-offer-extra-info"}>
-            <Entry info={"Percentage"} value={percentagePayment.toFixed(2)}/>
             <Entry info={"Total"} value={totalPayment.toFixed(2)}/>
             <Entry info={"Month"} value={monthPayment.toFixed(2)}/>
             <Entry info={"Payments count"} value={length}/>
+            <br/>
+            <Entry info={"Percentage"} value={percentagePayment.toFixed(2)}/>
+            <Entry info={"Graph percentage sum"} value={graphPercentageSum.toFixed(2)}/>
+            <Entry info={"Difference"} value={(percentagePayment - graphPercentageSum).toFixed(2)}/>
         </div>
-    )
+    );
 }
 
 function PaymentGraphForm({template}) {
@@ -140,12 +144,10 @@ function PaymentGraphTemplateCreator({template}) {
                 template.removeGraphElement(template.paymentGraph.length - 1);
             }
         } else {
-            date.setUTCMonth(date.getUTCMonth() + 1);
             for (let i = 0; i < count; i++) {
                 template.addGraphElement();
                 const created = template.paymentGraph[template.paymentGraph.length - 1];
                 created.date.set(nextDate());
-                console.log(created.date.get());
             }
         }
     }

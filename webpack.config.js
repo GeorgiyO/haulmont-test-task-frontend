@@ -1,7 +1,9 @@
 const path = require("path");
 
+const config = require("./config.json");
+
 module.exports = {
-    mode: "production",
+    mode: config.production ? "production" : "development",
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "./public"),
