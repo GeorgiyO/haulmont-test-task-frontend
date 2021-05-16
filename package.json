@@ -1,7 +1,7 @@
 {
   "name": "haulmont-test-task-frontend",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "expressServer.js",
   "scripts": {
     "dev": "webpack serve",
     "build": "webpack"
