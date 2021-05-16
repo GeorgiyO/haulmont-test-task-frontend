@@ -11,5 +11,5 @@ export function CreditList() {
                                Bank: {credit.bank.name}; Limit: {credit.limit}; Percentage: {credit.percentage}%
                            </Link>
                        )}
-    />
+    />;
 }

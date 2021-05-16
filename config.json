@@ -5,5 +5,5 @@
   "client": {
     "rootUrl": "/haulmont-test-task-frontend"
   },
-  "production": true
+  "production": false
 }

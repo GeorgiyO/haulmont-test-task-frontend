@@ -1,21 +1,13 @@
 import React from "react";
-import {useHistory} from "react-router-dom";
+import {AddEntity} from "src/view/components/addEntity";
 import {API, BankTemplate} from "src/model/entities/bank";
-import {BankForm} from "./form";
+import {BankForm} from "src/view/main/banks/form";
 
 export function AddBank() {
-
-    const history = useHistory();
-
-    const template = new BankTemplate();
-
-    const addBank = function () {
-        if (template.validate()) {
-            API.add(template.toInstance()).then((bank) => {
-                history.push("/banks/" + bank.id);
-            });
-        }
-    };
-
-    return <BankForm template={template} label={"Add bank"} buttonLabel={"Add"} action={addBank}/>;
+    return <AddEntity template={new BankTemplate()}
+                      API={API}
+                      formProvider={BankForm}
+                      entityName={"Bank"}
+                      entityUrl={"banks"}
+    />
 }

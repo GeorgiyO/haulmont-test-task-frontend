@@ -5,16 +5,23 @@ async function sendRequest(method, url, data) {
             'Content-Type': 'application/json'
         }
     };
+
     if (data !== undefined) init.body = JSON.stringify(data);
 
     return await fetch(url, init);
 }
 
 export function RESTApi(entityUrl) {
+
     this.getById = (id) => sendRequest(
         "GET",
         entityUrl + "/" + id
-    ).then((response) => response.json());
+    ).then((response) => {
+
+        if (response.status >= 200 && response.status < 300)
+        return response.json();
+
+    });
 
     this.getAll = () => sendRequest(
         "GET",
