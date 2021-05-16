@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Haulmont test task</title>
+    <script defer src="public/bundle.js"></script>
+    <!--
     <script defer>
 
         readFile("config.json")
@@ -11,7 +13,7 @@
                 const PRODUCTION = config.production;
                 const PROD_URL = config.client.rootUrl;
 
-                const scriptUrl = (PRODUCTION ? PROD_URL : "") + "/public/bundle.js";
+                const scriptUrl = "public/bundle.js";
 
                 loadScript(scriptUrl);
             });
@@ -31,6 +33,7 @@
         }
 
     </script>
+    -->
 </head>
 <body>
 <div id="root"></div>
