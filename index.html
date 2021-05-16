@@ -5,7 +5,7 @@
     <title>Haulmont test task</title>
     <script defer>
 
-        readFile("/config.json")
+        readFile("config.json")
             .then((text) => JSON.parse(text))
             .then((config) => {
                 const PRODUCTION = config.production;
