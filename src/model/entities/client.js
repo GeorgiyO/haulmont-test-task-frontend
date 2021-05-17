@@ -11,17 +11,17 @@ export function Client(passportNumber, firstName, secondName, patronymic, email,
     this.phone = phone;
 }
 
-export function ClientTemplate() {
-    this.passportNumber = new Observable("0");
-    this.firstName = new Observable("");
-    this.secondName = new Observable("");
-    this.patronymic = new Observable("");
-    this.email = new Observable("");
-    this.phone = new Observable("");
-    this.errors = this.getErrorsRefs();
-}
+export class ClientTemplate {
 
-ClientTemplate.prototype = {
+    constructor() {
+        this.passportNumber = new Observable("0");
+        this.firstName = new Observable("");
+        this.secondName = new Observable("");
+        this.patronymic = new Observable("");
+        this.email = new Observable("");
+        this.phone = new Observable("");
+        this.errors = this.getErrorsRefs();
+    }
 
     toInstance() {
         return new Client(
@@ -32,17 +32,17 @@ ClientTemplate.prototype = {
             this.email.get(),
             this.phone.get()
         );
-    },
+    }
 
     fromInstance(instance) {
         ["firstName", "secondName", "patronymic", "email", "phone"].forEach((key) => {
             this[key].set(instance[key]);
         });
-        let passport = String(instance.client.passportNumber);
+        let passport = instance.passportNumber;
         passport = "0".repeat(10 - passport.length) + passport;
         this.passportNumber.set(passport);
         return this;
-    },
+    }
 
     getErrorsRefs() {
         let res = {};
@@ -50,7 +50,7 @@ ClientTemplate.prototype = {
             res[k] = new Observable([]);
         });
         return res;
-    },
+    }
 
     validate() {
         this.forEachNameProp((key) => {
@@ -77,7 +77,7 @@ ClientTemplate.prototype = {
                 .errors
         );
         return this.isValid();
-    },
+    }
 
     isValid() {
         for (let errArr of Object.values(this.errors)) {
@@ -86,11 +86,12 @@ ClientTemplate.prototype = {
             }
         }
         return true;
-    },
+    }
 
     forEachNameProp(callback) {
         ["firstName", "secondName", "patronymic"].forEach(callback);
     }
+
 }
 
 export const API = new RESTApi(serverUrl + "/clients");

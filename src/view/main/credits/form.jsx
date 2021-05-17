@@ -1,6 +1,6 @@
 import React from "react";
 import {API as BanksAPI} from "src/model/entities/bank";
-import {EntitySelect} from "src/view/components/entitySelect";
+import {EntitySelect} from "src/view/components/entity/entitySelect";
 import {Input} from "src/view/components/input";
 
 export function CreditForm({template, label, buttonLabel, action}) {
@@ -15,7 +15,7 @@ export function CreditForm({template, label, buttonLabel, action}) {
                    inputDecorator={Input.positiveNumberAsString}
             />
             <EntitySelect label={"Bank"} valueRef={template.bank}
-                          entitiesSupplier={BanksAPI.getAll} entityToText={(bank) => bank.name}
+                          API={BanksAPI} entityToText={(bank) => bank.name}
             />
             <button onClick={action}>{buttonLabel}</button>
         </div>

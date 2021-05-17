@@ -1,7 +1,7 @@
 import React from "react";
 import {API, CreditOfferTemplate} from "src/model/entities/creditOffer";
 import {CreditOfferForm} from "src/view/main/creditOffers/form";
-import {UpdateEntity} from "src/view/components/updateEntity";
+import {UpdateEntity} from "src/view/components/entity/updateEntity";
 
 export function UpdateCreditOffer() {
     return <UpdateEntity template={new CreditOfferTemplate()}

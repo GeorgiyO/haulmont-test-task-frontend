@@ -1,5 +1,5 @@
 import React from "react";
-import {AddEntity} from "src/view/components/addEntity";
+import {AddEntity} from "src/view/components/entity/addEntity";
 import {API, BankTemplate} from "src/model/entities/bank";
 import {BankForm} from "src/view/main/banks/form";
 

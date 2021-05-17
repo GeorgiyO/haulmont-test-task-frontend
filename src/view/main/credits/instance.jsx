@@ -2,7 +2,7 @@ import React from "react";
 import {API} from "src/model/entities/credit";
 import {Link} from "react-router-dom";
 import {Entry} from "src/view/components/entry";
-import {EntityPage} from "src/view/components/entityPage";
+import {EntityPage} from "src/view/components/entity/entityPage";
 
 export function CreditInstance() {
     return <EntityPage API={API}

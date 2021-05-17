@@ -8,7 +8,11 @@ async function sendRequest(method, url, data) {
 
     if (data !== undefined) init.body = JSON.stringify(data);
 
-    return await fetch(url, init);
+    let response = await fetch(url, init);
+
+    if (response.ok) return response;
+
+    throw await response.json();
 }
 
 export function RESTApi(entityUrl) {
@@ -16,12 +20,7 @@ export function RESTApi(entityUrl) {
     this.getById = (id) => sendRequest(
         "GET",
         entityUrl + "/" + id
-    ).then((response) => {
-
-        if (response.status >= 200 && response.status < 300)
-        return response.json();
-
-    });
+    ).then((response) => response.json());
 
     this.getAll = () => sendRequest(
         "GET",

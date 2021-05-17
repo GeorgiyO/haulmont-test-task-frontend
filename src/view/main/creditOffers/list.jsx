@@ -1,7 +1,7 @@
 import React from "react";
 import {API} from "src/model/entities/creditOffer";
 import {Link} from "react-router-dom";
-import {EntityList} from "src/view/components/entityList";
+import {EntityList} from "src/view/components/entity/entityList";
 
 export function CreditOffersList() {
     return <EntityList API={API}

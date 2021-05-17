@@ -1,10 +1,11 @@
 import React from "react";
 import {Observable} from "src/domain/observable";
+import {handleApiError} from "src/view/components/apiErrorHandler";
 
 export function EntitySelect({
     label,
     valueRef,
-    entitiesSupplier,
+    API,
     entityToText,
     allowNone = false,
     errorsRef = new Observable([""])
@@ -16,12 +17,16 @@ export function EntitySelect({
     const [errors] = Observable.useWatch(errorsRef);
 
     React.useEffect(() => {
-        entitiesSupplier().then((entities) => {
-            setOptions(entities.map((entity, i) => (
-                <option key={i} value={JSON.stringify(entity)}>{entityToText(entity)}</option>
-            )));
-            valueRef.set(entities[0]);
-        });
+        API.getAll()
+            .then((entities) => {
+                setOptions(entities.map((entity, i) => (
+                    <option key={i} value={JSON.stringify(entity)}>{entityToText(entity)}</option>
+                )));
+                valueRef.set(entities[0]);
+            })
+            .catch((error) => {
+                handleApiError("on get entity list for select", error);
+            });
     }, []);
 
 

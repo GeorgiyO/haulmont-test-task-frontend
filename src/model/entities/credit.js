@@ -13,14 +13,14 @@ export function Credit(percentage, limit, bank) {
     }
 }
 
-export function CreditTemplate() {
-    this.percentage = new Observable("0");
-    this.limit = new Observable("0");
-    this.bank = new Observable({});
-    this.errors = this.getErrorsRefs();
-}
+export class CreditTemplate {
 
-CreditTemplate.prototype = {
+    constructor() {
+        this.percentage = new Observable("0");
+        this.limit = new Observable("0");
+        this.bank = new Observable({});
+        this.errors = this.getErrorsRefs();
+    }
 
     toInstance() {
         return new Credit(
@@ -28,14 +28,14 @@ CreditTemplate.prototype = {
             Number.parseInt(this.limit.get()),
             this.bank.get()
         )
-    },
+    }
 
     fromInstance(instance) {
         this.percentage.set(instance.percentage)
         this.limit.set(instance.limit);
         this.bank.set(instance.bank);
         return this;
-    },
+    }
 
     getErrorsRefs() {
         let res = {};
@@ -43,7 +43,7 @@ CreditTemplate.prototype = {
             res[k] = new Observable([]);
         });
         return res;
-    },
+    }
 
     validate() {
         this.errors.percentage.set(
@@ -55,7 +55,7 @@ CreditTemplate.prototype = {
         this.errors.limit.set(NumberValidator.positiveInt(this.limit.get()));
 
         return this.isValid();
-    },
+    }
 
     isValid() {
         for (let errArr of Object.values(this.errors)) {
@@ -65,6 +65,7 @@ CreditTemplate.prototype = {
         }
         return true;
     }
+
 }
 
 export const API = new RESTApi(serverUrl + "/credits");

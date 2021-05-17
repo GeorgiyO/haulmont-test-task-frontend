@@ -1,5 +1,5 @@
 import React from "react";
-import {EntityMainPage} from "src/view/components/entityMainPage";
+import {EntityMainPage} from "src/view/components/entity/entityMainPage";
 import {AddCredit} from "./add";
 import {UpdateCredit} from "./update";
 import {CreditInstance} from "./instance";

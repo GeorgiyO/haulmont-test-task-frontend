@@ -1,12 +1,12 @@
 import React from "react";
 import {API, ClientTemplate} from "src/model/entities/client";
-import {ClientForm} from "./form";
-import {AddEntity} from "src/view/components/addEntity";
+import {AddEntity} from "src/view/components/entity/addEntity";
+import {ClientAddForm} from "src/view/main/clients/addForm";
 
 export function AddClient() {
     return <AddEntity template={new ClientTemplate()}
                       API={API}
-                      formProvider={ClientForm}
+                      formProvider={ClientAddForm}
                       entityUrl={"clients"}
                       entityName={"Client"}
                       entityToId={(client) => client.passportNumber}

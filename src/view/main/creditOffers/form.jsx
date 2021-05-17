@@ -4,7 +4,7 @@ import {API as ClientAPI} from "src/model/entities/client";
 import {Observable} from "src/domain/observable";
 import {Input} from "src/view/components/input";
 import {Entry} from "src/view/components/entry";
-import {EntitySelect} from "src/view/components/entitySelect";
+import {EntitySelect} from "src/view/components/entity/entitySelect";
 
 export function CreditOfferForm({template, label, buttonLabel, action}) {
 
@@ -14,10 +14,10 @@ export function CreditOfferForm({template, label, buttonLabel, action}) {
             <ExtraInfo template={template}/>    {/* fixed position -> to right of the screen */}
 
             <h2>{label}:</h2>
-            <EntitySelect label={"Client"} valueRef={template.client} entitiesSupplier={ClientAPI.getAll}
+            <EntitySelect label={"Client"} valueRef={template.client} API={ClientAPI}
                           entityToText={(client) => `${client.firstName} ${client.secondName} ${client.patronymic}`}
             />
-            <EntitySelect label={"Credit"} valueRef={template.credit} entitiesSupplier={CreditAPI.getAll}
+            <EntitySelect label={"Credit"} valueRef={template.credit} API={CreditAPI}
                           entityToText={(credit) => `${credit.bank.name}; ${credit.percentage}%; limit: ${credit.limit}`}
             />
             <Input type={"number"} label={"Payment amount"}

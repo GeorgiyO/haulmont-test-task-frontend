@@ -1,5 +1,6 @@
 import React from "react";
 import {useHistory, useParams} from "react-router-dom";
+import {handleApiError} from "src/view/components/apiErrorHandler";
 
 export function EntityPage({API, url, entityToJsxFunction}) {
     const history = useHistory();
@@ -25,8 +26,10 @@ export function EntityPage({API, url, entityToJsxFunction}) {
                     <button className={"red"} onClick={deleteInstance}>Delete</button>
                     <button onClick={updateInstance}>Change</button>
                 </div>
-            )
-        })
+            );
+        }).catch((error) => {
+            handleApiError(`on get ${url}/${id}`, error);
+        });
     }, []);
 
     return content;

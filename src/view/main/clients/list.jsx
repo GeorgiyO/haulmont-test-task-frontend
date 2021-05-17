@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {API} from "src/model/entities/client";
-import {EntityList} from "src/view/components/entityList";
+import {EntityList} from "src/view/components/entity/entityList";
 
 export function ClientList() {
     return <EntityList API={API}

@@ -11,14 +11,14 @@ export function PaymentGraphElement(date, totalPayment, bodyPayment, percentageP
     this.totalPayment = bodyPayment + percentagePayment;
 }
 
-export function PaymentGraphElementTemplate() {
-    this.date = new Observable("");
-    this.bodyPayment = new Observable("0");
-    this.percentagePayment = new Observable("0");
-    this.errors = this.getErrorsRefs();
-}
+export class PaymentGraphElementTemplate {
 
-PaymentGraphElementTemplate.prototype = {
+    constructor() {
+        this.date = new Observable("");
+        this.bodyPayment = new Observable("0");
+        this.percentagePayment = new Observable("0");
+        this.errors = this.getErrorsRefs();
+    }
 
     toInstance() {
         return new PaymentGraphElement(
@@ -27,7 +27,7 @@ PaymentGraphElementTemplate.prototype = {
             Number.parseInt(this.bodyPayment.get()),
             Number.parseInt(this.percentagePayment.get())
         );
-    },
+    }
 
     fromInstance(instance) {
         this.date.set(instance.date);
@@ -35,7 +35,7 @@ PaymentGraphElementTemplate.prototype = {
             this[key].set(String(instance[key]));
         });
         return this;
-    },
+    }
 
     getErrorsRefs() {
         let res = {};
@@ -43,7 +43,7 @@ PaymentGraphElementTemplate.prototype = {
             res[k] = new Observable([]);
         });
         return res;
-    },
+    }
 
     validate() {
         this.forEachPaymentProp((key) => {
@@ -51,7 +51,7 @@ PaymentGraphElementTemplate.prototype = {
         });
         this.errors.date.set(DateValidator.future(this.date.get()));
         return this.isValid();
-    },
+    }
 
     isValid() {
         for (let errArr of Object.values(this.errors)) {
@@ -60,7 +60,7 @@ PaymentGraphElementTemplate.prototype = {
             }
         }
         return true;
-    },
+    }
 
     forEachPaymentProp(callback) {
         ["bodyPayment", "percentagePayment"].forEach(callback);

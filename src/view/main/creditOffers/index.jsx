@@ -1,5 +1,5 @@
 import React from "react";
-import {EntityMainPage} from "src/view/components/entityMainPage";
+import {EntityMainPage} from "src/view/components/entity/entityMainPage";
 import {AddCreditOffer} from "./add";
 import {UpdateCreditOffer} from "./update";
 import {CreditOfferInstance} from "./instance";

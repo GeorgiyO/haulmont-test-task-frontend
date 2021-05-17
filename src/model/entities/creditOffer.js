@@ -20,32 +20,31 @@ export function CreditOffer(paymentAmount, client, credit, paymentGraph) {
     }
 }
 
-export function CreditOfferTemplate() {
-    this.paymentAmount = new Observable("0");
-    this.client = new Observable({});
-    this.credit = new Observable({percentage: 0});
-    this.errors = this.getErrorsRefs();
-    this.paymentGraph = [];
+export class CreditOfferTemplate {
 
-    this.monthPayment = new Observable(0);
-    this.paymentGraphLength = new Observable(0);
-    this.graphPercentageSum = new Observable(0);
+    constructor() {
+        this.paymentAmount = new Observable("0");
+        this.client = new Observable({});
+        this.credit = new Observable({percentage: 0});
+        this.errors = this.getErrorsRefs();
+        this.paymentGraph = [];
 
-    this.paymentAmount.watch((val) => {
-        this.updateMonthPayment(val, this.credit.get().percentage, this.paymentGraphLength.get());
-    });
-    this.credit.watch((credit) => {
-        this.updateMonthPayment(this.paymentAmount.get(), credit.percentage, this.paymentGraphLength.get());
-    });
-    this.paymentGraphLength.watch((length) => {
-        this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage, length);
-    });
+        this.monthPayment = new Observable(0);
+        this.paymentGraphLength = new Observable(0);
+        this.graphPercentageSum = new Observable(0);
 
-    this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage, this.paymentGraphLength.get());
+        this.paymentAmount.watch((val) => {
+            this.updateMonthPayment(val, this.credit.get().percentage, this.paymentGraphLength.get());
+        });
+        this.credit.watch((credit) => {
+            this.updateMonthPayment(this.paymentAmount.get(), credit.percentage, this.paymentGraphLength.get());
+        });
+        this.paymentGraphLength.watch((length) => {
+            this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage, length);
+        });
 
-}
-
-CreditOfferTemplate.prototype = {
+        this.updateMonthPayment(this.paymentAmount.get(), this.credit.get().percentage, this.paymentGraphLength.get());
+    }
 
     toInstance() {
         return new CreditOffer(
@@ -54,7 +53,7 @@ CreditOfferTemplate.prototype = {
             this.credit.get(),
             this.paymentGraph.map((pg) => pg.toInstance())
         );
-    },
+    }
 
     fromInstance(instance) {
         this.paymentAmount.set(instance.paymentAmount);
@@ -64,7 +63,7 @@ CreditOfferTemplate.prototype = {
             this.addGraphElement(new PaymentGraphElementTemplate().fromInstance(pge));
         });
         return this;
-    },
+    }
 
     getErrorsRefs() {
         let res = {};
@@ -72,7 +71,7 @@ CreditOfferTemplate.prototype = {
             res[k] = new Observable([]);
         });
         return res;
-    },
+    }
 
     validate() {
         this.errors.paymentAmount.set(
@@ -81,7 +80,7 @@ CreditOfferTemplate.prototype = {
         this.paymentGraph.forEach((pg) => pg.validate());
 
         return this.isValid();
-    },
+    }
 
     isValid() {
 
@@ -98,7 +97,7 @@ CreditOfferTemplate.prototype = {
         }
 
         return true;
-    },
+    }
 
     addGraphElement(element = new PaymentGraphElementTemplate()) {
 
@@ -120,7 +119,7 @@ CreditOfferTemplate.prototype = {
 
         this.paymentGraph.push(element);
         this.paymentGraphLength.set(this.paymentGraph.length);
-    },
+    }
 
     removeGraphElement(index) {
         const [element] = this.paymentGraph.splice(index, 1);
@@ -128,7 +127,7 @@ CreditOfferTemplate.prototype = {
         this.monthPayment.unwatch(element.monthListener);
 
         this.paymentGraphLength.set(this.paymentGraph.length);
-    },
+    }
 
     updateMonthPayment(paymentAmount, percentage, length) {
         let val = length === 0 ?
