@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function Root() {
     return (
-        <BrowserRouter basename={rootUrl}>
+        <BrowserRouter>
             <div className={"content"}>
                 <Header/>
                 <Main/>

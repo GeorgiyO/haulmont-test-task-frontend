@@ -29,6 +29,7 @@ export function EntityPage({API, url, entityToJsxFunction}) {
             );
         }).catch((error) => {
             handleApiError(`on get ${url}/${id}`, error);
+            history.push(url);
         });
     }, []);
 
